@@ -1,0 +1,68 @@
+const inventoryData = [
+  {
+    id: 1,
+    itemName: 'Laptop Dell XPS 15',
+    quantity: 12,
+    location: 'Gudang A',
+    category: 'Electronics',
+    lastUpdated: '2026-04-20',
+  },
+  {
+    id: 2,
+    itemName: 'Mechanical Keyboard',
+    quantity: 35,
+    location: 'Gudang B',
+    category: 'Peripherals',
+    lastUpdated: '2026-04-21',
+  },
+  {
+    id: 3,
+    itemName: 'Office Chair - Ergonomic',
+    quantity: 8,
+    location: 'Ruang Kantor',
+    category: 'Furniture',
+    lastUpdated: '2026-04-18',
+  },
+  {
+    id: 4,
+    itemName: 'Whiteboard Marker (set)',
+    quantity: 50,
+    location: 'Gudang C',
+    category: 'Stationery',
+    lastUpdated: '2026-04-22',
+  },
+  {
+    id: 5,
+    itemName: 'Wireless Mouse',
+    quantity: 27,
+    location: 'Gudang B',
+    category: 'Peripherals',
+    lastUpdated: '2026-04-23',
+  },
+  {
+    id: 6,
+    itemName: 'Standing Desk',
+    quantity: 4,
+    location: 'Ruang Kantor',
+    category: 'Furniture',
+    lastUpdated: '2026-04-19',
+  },
+  {
+    id: 7,
+    itemName: 'HDMI Cable 2m',
+    quantity: 60,
+    location: 'Gudang A',
+    category: 'Accessories',
+    lastUpdated: '2026-04-24',
+  },
+  {
+    id: 8,
+    itemName: 'Printer Ink Cartridge',
+    quantity: 15,
+    location: 'Gudang C',
+    category: 'Consumables',
+    lastUpdated: '2026-04-25',
+  },
+];
+
+module.exports = { inventoryData };
