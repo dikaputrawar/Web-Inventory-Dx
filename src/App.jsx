@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './components/ui/card.tsx';
+import { Card, CardContent, CardHeader, CardTitle } from './components/ui/card.jsx';
 import { Button } from './components/ui/button.jsx';
 import { Badge } from './components/ui/badge.jsx';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './components/ui/table.tsx';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './components/ui/table.jsx';
 
 function App() {
   const [inventoryData, setInventoryData] = useState([
