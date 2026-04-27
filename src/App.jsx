@@ -56,15 +56,54 @@ function App() {
     }
   ]);
 
-  const handleEdit = (id) => {
-    console.log('Edit item with ID:', id);
-    // Implement edit functionality
+  const [editModal, setEditModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [editForm, setEditForm] = useState({
+    itemName: '',
+    quantity: '',
+    location: '',
+    category: '',
+    lastUpdated: ''
+  });
+
+  const getToday = () => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   };
 
-  const handleDelete = (id) => {
-    console.log('Delete item with ID:', id);
-    // Implement delete functionality
-    setInventoryData(inventoryData.filter(item => item.id !== id));
+  const handleEdit = (item) => {
+    setSelectedItem(item);
+    setEditForm({
+      itemName: item.itemName,
+      quantity: item.quantity,
+      location: item.location,
+      category: item.category,
+      lastUpdated: item.lastUpdated
+    });
+    setEditModal(true);
+  };
+
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    setInventoryData(inventoryData.map(item =>
+      item.id === selectedItem.id
+        ? { ...item, ...editForm, quantity: Number(editForm.quantity), lastUpdated: getToday() }
+        : item
+    ));
+    setEditModal(false);
+    setSelectedItem(null);
+  };
+
+  const handleDeleteClick = (item) => {
+    setSelectedItem(item);
+    setDeleteModal(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    setInventoryData(inventoryData.filter(item => item.id !== selectedItem.id));
+    setDeleteModal(false);
+    setSelectedItem(null);
   };
 
   const totalItems = inventoryData.length;
@@ -157,10 +196,16 @@ function App() {
 
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-3 text-sm">
-                        <button className="text-blue-600 hover:underline transition-colors">
+                        <button
+                          className="text-blue-600 hover:underline transition-colors cursor-pointer"
+                          onClick={() => handleEdit(item)}
+                        >
                           Edit
                         </button>
-                        <button className="text-red-500 hover:underline transition-colors">
+                        <button
+                          className="text-red-500 hover:underline transition-colors cursor-pointer"
+                          onClick={() => handleDeleteClick(item)}
+                        >
                           Delete
                         </button>
                       </div>
@@ -172,6 +217,96 @@ function App() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Edit Modal */}
+      {editModal && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6 space-y-5">
+            <h2 className="text-lg font-semibold text-gray-800">Edit Item</h2>
+            <form onSubmit={handleEditSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm text-gray-600 mb-1">Item Name</label>
+                <input
+                  type="text"
+                  value={editForm.itemName}
+                  onChange={(e) => setEditForm({ ...editForm, itemName: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-600 mb-1">Quantity</label>
+                <input
+                  type="number"
+                  value={editForm.quantity}
+                  onChange={(e) => setEditForm({ ...editForm, quantity: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  required
+                  min="0"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-600 mb-1">Location</label>
+                <input
+                  type="text"
+                  value={editForm.location}
+                  onChange={(e) => setEditForm({ ...editForm, location: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-600 mb-1">Category</label>
+                <input
+                  type="text"
+                  value={editForm.category}
+                  onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  required
+                />
+              </div>
+              <div className="flex justify-end gap-3 pt-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => { setEditModal(false); setSelectedItem(null); }}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit">
+                  Save Changes
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteModal && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-lg w-full max-w-sm p-6 space-y-4">
+            <h2 className="text-lg font-semibold text-gray-800">Delete Item</h2>
+            <p className="text-sm text-gray-600">
+              Are you sure you want to delete <span className="font-semibold">{selectedItem?.itemName}</span>? This action cannot be undone.
+            </p>
+            <div className="flex justify-end gap-3 pt-2">
+              <Button
+                variant="outline"
+                onClick={() => { setDeleteModal(false); setSelectedItem(null); }}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={handleDeleteConfirm}
+              >
+                Delete
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   </div>
