@@ -13,9 +13,18 @@ app.use(express.json());
 // Routes
 app.use('/inventory', inventoryRoutes);
 
-// Test route
+// Root route - API info
 app.get('/', (req, res) => {
-  res.send('API is running');
+  res.json({
+    message: 'Inventory API is running',
+    version: '1.0.0',
+    endpoints: {
+      'GET    /inventory':      'Get all inventory items',
+      'POST   /inventory':      'Add a new item',
+      'PUT    /inventory/:id':  'Update an existing item',
+      'DELETE /inventory/:id':  'Delete an item',
+    },
+  });
 });
 
 // 404 handler - unknown routes
